@@ -64,17 +64,17 @@ async function dalle(username:string,prompt: string) {
 }
 
 /**
- * Speech to text
+ * Speech to text and generate a response using chatgpt
  * @param username
  * @param videoPath
  */
-async function whisper(username: string, videoPath: string): Promise<string> {
-  const file = fs.createReadStream(videoPath);
-  const response = await openai.createTranscription(file, "whisper-1").then((res) => res.data).catch((err) => console.log(err));
-  if (response) {
-    const transcript = response.text;
-    const message = await chatgpt(username, transcript);
-    return message;
+async function whisperToChat(username: string, videoPath: string): Promise<string> {
+  const file: any = fs.createReadStream(videoPath);
+  const transcriptionResponse = await openai.createTranscription(file, "whisper-1");
+  const transcription = transcriptionResponse.data.text;
+  if (transcription) {
+    const response = await chatgpt(username, transcription);
+    return response;
   } else {
     return "Speech to text failed";
   }
