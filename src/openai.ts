@@ -71,7 +71,7 @@ async function dalle(username:string,prompt: string) {
 async function whisperToChat(username: string, videoPath: string): Promise<string> {
   const file: any = fs.createReadStream(videoPath);
   const transcriptionResponse = await openai.createTranscription(file, "whisper-1");
-  const transcription = transcriptionResponse.data.text;
+  const transcription = transcriptionResponse.text;
   if (transcription) {
     const response = await chatgpt(username, transcription);
     return response;
